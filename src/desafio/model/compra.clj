@@ -1,25 +1,27 @@
-(ns desafio.model.compra)
+(ns desafio.model.compra
+  (:require [schema.core :as s])
+  (:use [java-time :only [local-date local-date?]]))
 
-(defrecord Compra [
-                   compra-id
-                   data
-                   valor
-                   estabelecimento
-                   categoria
-                   cartao-id])
+(def LocalDate (s/pred local-date? 'tipo-de-data))
+(def Compra
+  {:compra-id s/Uuid
+   :data LocalDate
+   :valor s/Num
+   :estabelecimento s/Str
+   :categoria s/Str
+   :cartao-id s/Uuid})
 
-
-(defn cria-nova-compra
-  [data
-   valor
-   estabelecimento
-   categoria
-   cartao-id]
-  (->Compra (str (java.util.UUID/randomUUID))
-             data
-             valor
-             estabelecimento
-             categoria
-             cartao-id))
+(s/defn cria-nova-compra :- Compra
+  [data :- LocalDate
+   valor :- s/Num
+   estabelecimento :- s/Str
+   categoria :- s/Str
+   cartao-id :- s/Uuid]
+  {:compra-id (str (java.util.UUID/randomUUID))
+      :data      data
+           :valor valor
+           :estabelecimento estabelecimento
+           :categoria categoria
+            :cartao-id cartao-id})
 
 

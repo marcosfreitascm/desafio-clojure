@@ -1,26 +1,26 @@
-(ns desafio.model.cartao)
+(ns desafio.model.cartao
+  (:require [schema.core :as s]))
 
-(defrecord Cartao [
-                   cartao-id
-                   numero
-                   cvv
-                   validade
-                   limite
-                   cliente-id])
+(def Cartao
+  {:cartao-id  s/Uuid
+   :numero     s/Num
+   :cvv        s/Num
+   :validade   s/Str
+   :limite     s/Num
+   :cliente-id s/Uuid})
 
-(defn cria-novo-cartao
-  [
-   numero
-   cvv
-   validade
-   limite
-   cliente-id]
-  (->Cartao (str (java.util.UUID/randomUUID))
-            numero
-            cvv
-            validade
-            limite
-            cliente-id))
+(s/defn cria-novo-cartao :- Cartao
+  [numero :- s/Num
+   cvv :- s/Num
+   validade :- s/Str
+   limite :- s/Num
+   cliente-id :- s/Uuid]
+  {:cartao-id  (str (java.util.UUID/randomUUID))
+   :numero     numero
+   :cvv        cvv
+   :validade   validade
+   :limite     limite
+   :cliente-id cliente-id})
 
 
 

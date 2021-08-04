@@ -1,8 +1,20 @@
-(ns desafio.model.cliente)
+(ns desafio.model.cliente
+  (:require [schema.core :as s]))
 
-(defrecord Cliente [cliente-id nome cpf email])
+(def Cliente
+  { :cliente-id s/Uuid
+    :nome s/Str
+   :cpf s/Str
+   :email s/Str
+   })
 
-(defn cria-novo-cliente
-  [nome cpf email]
-  (->Cliente (str (java.util.UUID/randomUUID)) nome cpf email))
+
+(s/defn cria-novo-cliente :- Cliente
+  [nome :- s/Str
+   cpf :- s/Str
+   email :- s/Str]
+  {:cliente-id (str (java.util.UUID/randomUUID))
+   :nome nome
+   :cpf cpf
+   :email email})
 
