@@ -1,5 +1,7 @@
 (ns desafio.logic.logic
-  (:require [desafio.db.db :as d.db]))
+  (:require [desafio.db.db :as d.db]
+            [schema.core :as s]
+            [desafio.model.compra :as d.compra]))
 
 (use '[java-time :only (format)])
 
@@ -25,6 +27,10 @@
 (defn retorna-dados-cartao
   [cartao-id]
   (filter #(= (:cartao-id %) cartao-id) (retorna-cartoes)))
+
+(defn retorna-dados-cartao-por-numero
+  [numero]
+  (first (filter #(= (:numero %) numero) (retorna-cartoes))))
 
 (defn gastos-compras-por-cartao
   [[cartao compras]]
@@ -56,5 +62,20 @@
                               [compra]
                               (identical? (:estabelecimento compra) estabelecimento))
                             (d.db/retorna-todas-compras)))
+
+(s/defn adiciona-compra :- [d.compra/Compra]
+  [compras :- [d.compra/Compra]
+   data :- d.compra/LocalDate
+   valor :- s/Num
+   estabelecimento :- s/Str
+   categoria :- s/Str
+   numero :- s/Num]
+  (let [cartao (retorna-dados-cartao-por-numero numero)]
+    (if (>= (get cartao :limite) valor)
+      {:compras   (conj compras
+                        (d.compra/cria-nova-compra data valor estabelecimento categoria (get cartao :cartao-id)))
+       :resultado :sucesso}
+      {:compras   compras
+       :resultado :limite-indisponivel})))
 
 
