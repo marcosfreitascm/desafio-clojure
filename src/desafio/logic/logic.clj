@@ -1,9 +1,8 @@
 (ns desafio.logic.logic
   (:require [desafio.db.db :as d.db]
             [schema.core :as s]
-            [desafio.model.compra :as d.compra]))
-
-(use '[java-time :only (format)])
+            [desafio.model.compra :as d.compra])
+  (:use [java-time :only [as]]))
 
 (defn retorna-todas-compras [] (d.db/retorna-todas-compras))
 
@@ -21,8 +20,7 @@
   [[categoria compras]]
   {:categoria   categoria
    :gasto-total (total-das-compras compras)
-   }
-  )
+   })
 
 (defn retorna-dados-cartao
   [cartao-id]
@@ -41,7 +39,7 @@
 
 (defn comprou-no-mes?
   [compra mes]
-  (= (format "MM" (:data compra)) mes))
+  (= (as (:data compra) :month-of-year) mes))
 
 (defn fatura-por-mes [mes] (->>
                              (d.db/retorna-todas-compras)

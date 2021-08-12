@@ -27,5 +27,5 @@
 (println (d.logic/compras-por-estabelecimento "Renner"))
 
 (println "Gasto por mês:")
-(println (d.logic/fatura-por-mes "02"))
+(println (d.logic/fatura-por-mes 2))
 
