@@ -1,31 +1,45 @@
 (ns desafio.core
-  (:require [desafio.logic.logic :as d.logic])
-  (:use [java-time :only [local-date local-date?]]))
+  (:require [desafio.logic.logic :as d.logic]
+            [desafio.db.db :as d.db]
+            [schema.core :as s])
+  (:use [java-time :only [local-date local-date?]]
+        clojure.pprint))
 
+(s/set-fn-validation! true)
 
+(d.db/apaga-banco!)
+(def conn (d.db/abre-conexao!))
+(d.db/cria-schema! conn)
+
+(d.db/cria-dados-exemplo conn)
+
+; Codigo já existente
 (println "Clientes:")
-(println (d.logic/retorna-clientes))
+(pprint (d.db/todos-os-clientes (d.db/snapshot-db conn)))
 
 (println "Cartões:")
-(println (d.logic/retorna-cartoes))
+(pprint(d.db/todos-os-cartoes (d.db/snapshot-db conn)))
 
-(let [compras-realizadas (d.logic/retorna-todas-compras)]
-  (println "Compras realizadas:")
-  (println compras-realizadas)
+(let [cartao (d.db/obtem-cartao-por-numero (d.db/snapshot-db conn) 2555)
+      compra (get (d.logic/adiciona-compra (java.util.Date.)
+                                           1000M
+                                           "Padaria Nova"
+                                           "Alimentação"
+                                           cartao) :compra)]
+  (println "Adicionando compra:")
+  (println compra)
+  (d.db/adiciona-compras! conn [compra]))
 
-  (println "Adicionando compras:")
-  (println (get (d.logic/adiciona-compra compras-realizadas   (local-date 2021 8 3)
-                                    1000
-                                    "Padaria Nova"
-                                    "Alimentação"
-                                    2555) :compras)))
+(let [compras (d.db/todas-as-compras (d.db/snapshot-db conn))]
+(println "Compras realizadas:")
+(pprint compras)
 
 (println "Gastos por categoria:")
-(println (d.logic/total-compras-por-categoria))
+(pprint (d.logic/total-compras-por-categoria compras))
 
-(println "Compras por estabelecimento:")
-(println (d.logic/compras-por-estabelecimento "Renner"))
+(pprint "Compras por estabelecimento:")
+(pprint (d.logic/compras-por-estabelecimento "Renner" compras))
 
 (println "Gasto por mês:")
-(println (d.logic/fatura-por-mes 2))
+(println (d.logic/fatura-por-mes compras 7)))
 

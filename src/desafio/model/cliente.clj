@@ -2,10 +2,10 @@
   (:require [schema.core :as s]))
 
 (def Cliente
-  { :cliente-id s/Uuid
-    :nome s/Str
-   :cpf s/Str
-   :email s/Str
+  {:cliente/id    s/Uuid
+   :cliente/nome  s/Str
+   :cliente/cpf   s/Str
+   :cliente/email s/Str
    })
 
 
@@ -13,8 +13,8 @@
   [nome :- s/Str
    cpf :- s/Str
    email :- s/Str]
-  {:cliente-id (str (java.util.UUID/randomUUID))
-   :nome nome
-   :cpf cpf
-   :email email})
+  {:cliente/id    (java.util.UUID/randomUUID)
+   :cliente/nome  nome
+   :cliente/cpf   cpf
+   :cliente/email email})
 

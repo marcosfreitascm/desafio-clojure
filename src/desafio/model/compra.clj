@@ -1,27 +1,31 @@
 (ns desafio.model.compra
-  (:require [schema.core :as s])
-  (:use [java-time :only [local-date local-date?]]))
+  (:require [schema.core :as s]
+            [desafio.model.cartao :as cartao])
+  (:import (java.util Date)))
 
-(def LocalDate (s/pred local-date? 'tipo-de-data))
 (def Compra
-  {:compra-id s/Uuid
-   :data LocalDate
-   :valor s/Num
-   :estabelecimento s/Str
-   :categoria s/Str
-   :cartao-id s/Uuid})
+  {:compra/id              s/Uuid
+   :compra/data            Date
+   :compra/valor           s/Num
+   :compra/estabelecimento s/Str
+   :compra/categoria       s/Str
+   :compra/cartao          cartao/Cartao})
 
-(s/defn cria-nova-compra :- Compra
-  [data :- LocalDate
+(def Solicitacao-de-Compra
+  {:compra    Compra
+   :resultado s/Keyword})
+
+(s/defn cria-nova-compra
+  [data
    valor :- s/Num
    estabelecimento :- s/Str
    categoria :- s/Str
-   cartao-id :- s/Uuid]
-  {:compra-id (str (java.util.UUID/randomUUID))
-      :data      data
-           :valor valor
-           :estabelecimento estabelecimento
-           :categoria categoria
-            :cartao-id cartao-id})
+   cartao :- (s/maybe cartao/Cartao)]
+  {:compra/id              (java.util.UUID/randomUUID)
+   :compra/data            data
+   :compra/valor           valor
+   :compra/estabelecimento estabelecimento
+   :compra/categoria       categoria
+   :compra/cartao          cartao})
 
 
