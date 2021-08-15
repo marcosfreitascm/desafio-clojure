@@ -2,8 +2,7 @@
   (:require [desafio.logic.logic :as d.logic]
             [desafio.db.db :as d.db]
             [schema.core :as s])
-  (:use [java-time :only [local-date local-date?]]
-        clojure.pprint))
+  (:use clojure.pprint))
 
 (s/set-fn-validation! true)
 
@@ -41,5 +40,5 @@
 (pprint (d.logic/compras-por-estabelecimento "Renner" compras))
 
 (println "Gasto por mês:")
-(println (d.logic/fatura-por-mes compras 7)))
+(println (d.logic/fatura-por-mes compras 8)))
 

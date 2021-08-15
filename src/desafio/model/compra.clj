@@ -12,7 +12,7 @@
    :compra/cartao          cartao/Cartao})
 
 (def Solicitacao-de-Compra
-  {:compra    Compra
+  {:compra    (s/maybe Compra)
    :resultado s/Keyword})
 
 (s/defn cria-nova-compra
