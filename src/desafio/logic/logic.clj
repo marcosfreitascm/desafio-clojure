@@ -42,7 +42,7 @@
                                       (= (:compra/estabelecimento compra) estabelecimento))
                                     compras))
 
-(s/defn adiciona-compra :- (s/maybe d.compra/Solicitacao-de-Compra)
+(s/defn adiciona-compra :- d.compra/Solicitacao-de-Compra
   [data :- Date
    valor :- s/Num
    estabelecimento :- s/Str
