@@ -6,5 +6,6 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [clojure.java-time "0.3.2"]
                  [prismatic/schema "1.1.12"]
-                 [com.datomic/datomic-pro "1.0.6269"]]
+                 [com.datomic/datomic-pro "1.0.6269"]
+                 [org.apache.kafka/kafka-clients "2.3.1"]]
   :repl-options {:init-ns desafio.core})
